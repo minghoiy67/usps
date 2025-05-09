@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Verification</title>
+
+    <!-- Cloudflare Turnstile Script -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+
+    <h2>Please verify you're human to continue</h2>
+
+    <!-- Cloudflare Turnstile widget inside a form -->
+    <form action="verify.php" method="POST">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAABbs517UpHx4g58S"></div>
+        <br>
+        <button type="submit">Verify & Continue</button>
+    </form>
+
+</body>
+</html>
