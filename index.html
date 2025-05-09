@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human Verification</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+
+  <h2>Verify you're human</h2>
+
+  <form id="captcha-form">
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAABbs517UpHx4g58S"></div>
+    <br>
+    <button type="submit">Continue</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('captcha-form');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const token = document.querySelector('[name="cf-turnstile-response"]').value;
+      const response = await fetch('/api/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'cf-turnstile-response': token })
+      });
+      if (response.status === 302) {
+        const redirectURL = response.headers.get('Location');
+        window.location.href = redirectURL;
+      } else {
+        alert('Verification failed. Please try again.');
+      }
+    });
+  </script>
+
+</body>
+</html>
